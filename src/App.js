@@ -6,44 +6,45 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import About from "./components/About";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "./state/index";
 
 const App = () => {
+  const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+  const AC = bindActionCreators(actionCreators, dispatch);
+
   const [showAddTask, setShowAddTask] = useState(false);
-  //così facendo lo rendiamo parte dello stato del nostro componente
-  const [tasks, setTasks] = useState([]);
-  /* in realtà dovremmo le context api o redux*/
+  const [mounted, setMounted] = useState(false); //c'è sicuramente un modo più elegante
 
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const tasksFromServer = await fetchTasks();
-        if(tasksFromServer)
-          setTasks(tasksFromServer);
+        const tasks = await fetchTasks();
+        AC.setInitTasks(tasks);
+        setMounted(true);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getTasks();
-  }, []);
+    if(!mounted) getTasks();
+  }, [mounted, AC]);
 
   const handleAddTask = async (task) => {
     const data = await addTask(task);
-    setTasks([...tasks, data]);
+    AC.addTask(data);
   };
 
   const handleDeleteTask = async (id) => {
     await deleteTask(id);
-    setTasks(tasks.filter((task) => task.id !== id));
+    AC.deleteTask(id);
   };
 
   const handleToggleReminder = async (id) => {
-    const data = await toggleReminder(id);
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, reminder: data.reminder } : task
-      )
-    );
+    await toggleReminder(id);
+    AC.toggleReminder(id);
   };
 
   const toggleAddForm = () => {
