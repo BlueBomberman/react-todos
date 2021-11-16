@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). I followed the traversy media React tutorial, and then tested stuff like: React routing, Redux, Materia-ui components, API calls, ecc..
 
 ## Available Scripts
 
@@ -14,7 +14,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm run server`
-
-Starts the mocked server on port 5000
+## Backend
+for the backend I used a module called JSON Server, and deployed it on Heroku.
 
