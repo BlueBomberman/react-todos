@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). I followed the [traversy media React tutorial](https://www.youtube.com/watch?v=w7ejDZ8SWv8), and then tested stuff like: React routing, Redux, Materia-ui components, API calls, ecc..
 
+You can find the DEMO -> [here](https://react-todos-livid.vercel.app/).
+
 ## Available Scripts
 
 In the project directory, you can run:
