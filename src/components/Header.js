@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import Button from "./Button";
+import Button from "@mui/material/Button";
 import { useLocation } from "react-router";
 
 const Header = ({ title, onAdd, showAdd }) => {
@@ -9,11 +9,9 @@ const Header = ({ title, onAdd, showAdd }) => {
     <header className="header">
       <h1>{title}</h1>
       {location.pathname === "/" && (
-        <Button
-          color={showAdd ? "red" : "blue"}
-          text={showAdd ? "Close" : "Add"}
-          onClick={onAdd}
-        />
+        <Button variant="contained" color={showAdd ? "primary" : "secondary"} onClick={onAdd}>
+          {showAdd ? "Close" : "Add"}
+        </Button>
       )}
     </header>
   );
