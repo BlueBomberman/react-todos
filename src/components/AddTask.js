@@ -3,14 +3,16 @@ import { forwardRef } from "react";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
 const AddTask = forwardRef(({ onAdd }, ref) => {
   const [text, setText] = useState("");
-  const [day, setDay] = useState("");
+  const [day, setDay] = useState(new Date());
   const [reminder, setReminder] = useState(false);
 
   const onSubmit = (e) => {
@@ -22,7 +24,7 @@ const AddTask = forwardRef(({ onAdd }, ref) => {
     onAdd({ text, day, reminder });
 
     setText("");
-    setDay("");
+    setDay(new Date());
     setReminder(false);
 
     e.preventDefault();
@@ -30,7 +32,7 @@ const AddTask = forwardRef(({ onAdd }, ref) => {
 
   const handleCancelClick = (e) => {
     setText("");
-    setDay("");
+    setDay(new Date());
     setReminder(false);
   };
 
@@ -46,53 +48,54 @@ const AddTask = forwardRef(({ onAdd }, ref) => {
 
   return (
     <form ref={ref} className="add-form" onSubmit={onSubmit}>
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Grid item>
+      <Grid container direction="column" alignItems="center">
+        <Grid item className="input-field">
           <TextField
-            className="mb-3 mt-3"
+            className="mb-3 mt-3 input-field"
             required
             placeholder="Add Task"
-            label="Task"
+            label="Nome Task"
             value={text}
             onChange={(e) => {
               setText(e.target.value);
             }}
           />
         </Grid>
-        <Grid item>
-          <TextField
-            className="mb-3"
-            placeholder="Add Day & Time"
-            label="Day & Time"
-            value={day}
-            onChange={(e) => {
-              setDay(e.target.value);
-            }}
-          />
+        <Grid item className="input-field">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              className="mb-3 input-field"
+              label="Date&Time"
+              error={true}
+              value={day}
+              onChange={(newValue) => {
+                setDay(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Grid>
-        <Grid item>
+        <Grid item className="input-field">
           <FormGroup className="mb-3">
             <FormControlLabel label="Set Reminder" control={checkbox} />
           </FormGroup>
         </Grid>
         <Grid item>
-          <ButtonGroup>
-            <Button variant="contained" color="primary" type="submit">
-              Save Task
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleCancelClick}
-            >
-              Cancel Task
-            </Button>
-          </ButtonGroup>
+          <Button
+            sx={{ marginRight: "10px" }}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Save Task
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleCancelClick}
+          >
+            Cancel Task
+          </Button>
         </Grid>
       </Grid>
     </form>

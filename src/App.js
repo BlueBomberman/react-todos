@@ -6,10 +6,20 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import About from "./components/About";
-import Fade from "@mui/material/Fade";
+import Collapse from "@mui/material/Collapse";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { tasksCreators, formCreators } from "./state/index";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { indigo } from "@mui/material/colors";
+const customTheme = createTheme({
+  palette: {
+    primary: indigo,
+    secondary: {
+      main: '#26a69a',
+    },
+  },
+});
 
 const App = () => {
   const tasks = useSelector((state) => state.tasks);
@@ -65,40 +75,40 @@ const App = () => {
 
   return (
     <Router>
-      <div className="container">
-        <Header
-          title="Task Tracker"
-          onAdd={toggleAddForm}
-          showAdd={showAddTask}
-        />
-        <Routes>
-          <Route
-            path="/"
-            exact
-            element={
-              <>
-                {showAddTask && (
-                  <Fade in={showAddTask}>
-                    <AddTask onAdd={handleAddTask} />
-                  </Fade>
-                )}
-
-                {tasks.length > 0 ? (
-                  <Tasks
-                    tasks={tasks}
-                    onToggle={handleToggleReminder}
-                    onDelete={handleDeleteTask}
-                  />
-                ) : (
-                  "No tasks to show"
-                )}
-              </>
-            }
+      <ThemeProvider theme={customTheme}>
+        <div className="container">
+          <Header
+            title="Task Tracker"
+            onAdd={toggleAddForm}
+            showAdd={showAddTask}
           />
-          <Route path="/about" element={<About />} />
-        </Routes>
-        <Footer />
-      </div>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <>
+                  <Collapse in={showAddTask}>
+                    <AddTask onAdd={handleAddTask} />
+                  </Collapse>
+
+                  {tasks.length > 0 ? (
+                    <Tasks
+                      tasks={tasks}
+                      onToggle={handleToggleReminder}
+                      onDelete={handleDeleteTask}
+                    />
+                  ) : (
+                    "No tasks to show"
+                  )}
+                </>
+              }
+            />
+            <Route path="/about" element={<About />} />
+          </Routes>
+          <Footer />
+        </div>
+      </ThemeProvider>
     </Router>
   );
 };
