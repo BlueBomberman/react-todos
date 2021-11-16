@@ -1,7 +1,7 @@
 //fetch tasks
 export const fetchTasks = async () => {
   try {
-    const res = await fetch("http://localhost:5000/tasks");
+    const res = await fetch("https://blooming-garden-99974.herokuapp.com/tasks");
     const data = await res.json();
 
     return data;
@@ -12,7 +12,7 @@ export const fetchTasks = async () => {
 
 const fetchTask = async (id) => {
   try {
-    const res = await fetch(`http://localhost:5000/tasks/${id}`);
+    const res = await fetch(`https://blooming-garden-99974.herokuapp.com/tasks/${id}`);
     const data = await res.json();
 
     return data;
@@ -23,7 +23,7 @@ const fetchTask = async (id) => {
 
 export const addTask = async (task) => {
   try {
-    const res = await fetch("http://localhost:5000/tasks/", {
+    const res = await fetch("https://blooming-garden-99974.herokuapp.com/tasks/", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(task),
@@ -38,7 +38,7 @@ export const addTask = async (task) => {
 //Delete Task
 export const deleteTask = async (id) => {
   try {
-    await fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" });
+    await fetch(`https://blooming-garden-99974.herokuapp.com/tasks/${id}`, { method: "DELETE" });
   } catch (error) {
     throw error;
   }
@@ -49,7 +49,7 @@ export const toggleReminder = async (id) => {
     const taskToToggle = await fetchTask(id);
     const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder };
 
-    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+    const res = await fetch(`https://blooming-garden-99974.herokuapp.com/tasks/${id}`, {
       method: "PUT",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(updTask),
