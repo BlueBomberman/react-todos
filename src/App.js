@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import About from "./components/About";
+import Fade from "@mui/material/Fade";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { tasksCreators, formCreators } from "./state/index";
@@ -32,18 +33,30 @@ const App = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAddTask = async (task) => {
-    const data = await addTask(task);
-    AC.addTask(data);
+    try {
+      const data = await addTask(task);
+      AC.addTask(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteTask = async (id) => {
-    await deleteTask(id);
-    AC.deleteTask(id);
+    try {
+      await deleteTask(id);
+      AC.deleteTask(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleToggleReminder = async (id) => {
-    await toggleReminder(id);
-    AC.toggleReminder(id);
+    try {
+      await toggleReminder(id);
+      AC.toggleReminder(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toggleAddForm = () => {
@@ -64,7 +77,12 @@ const App = () => {
             exact
             element={
               <>
-                {showAddTask && <AddTask onAdd={handleAddTask} />}
+                {showAddTask && (
+                  <Fade in={showAddTask}>
+                    <AddTask onAdd={handleAddTask} />
+                  </Fade>
+                )}
+
                 {tasks.length > 0 ? (
                   <Tasks
                     tasks={tasks}
