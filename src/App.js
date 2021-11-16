@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { fetchTasks, deleteTask, addTask, toggleReminder } from "./utils/api";
 import AddTask from "./components/AddTask";
@@ -6,48 +6,61 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import About from "./components/About";
+import Fade from "@mui/material/Fade";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { tasksCreators, formCreators } from "./state/index";
 
 const App = () => {
-  const [showAddTask, setShowAddTask] = useState(false);
-  //così facendo lo rendiamo parte dello stato del nostro componente
-  const [tasks, setTasks] = useState([]);
-  /* in realtà dovremmo le context api o redux*/
+  const tasks = useSelector((state) => state.tasks);
+  const showAddTask = useSelector((state) => state.form);
+
+  const dispatch = useDispatch();
+  const AC = bindActionCreators(tasksCreators, dispatch);
+  const { toggleForm } = bindActionCreators(formCreators, dispatch);
 
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const tasksFromServer = await fetchTasks();
-        if(tasksFromServer)
-          setTasks(tasksFromServer);
+        const tasks = await fetchTasks();
+        AC.setInitTasks(tasks);
       } catch (error) {
         console.log(error);
       }
     };
 
     getTasks();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAddTask = async (task) => {
-    const data = await addTask(task);
-    setTasks([...tasks, data]);
+    try {
+      const data = await addTask(task);
+      AC.addTask(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteTask = async (id) => {
-    await deleteTask(id);
-    setTasks(tasks.filter((task) => task.id !== id));
+    try {
+      await deleteTask(id);
+      AC.deleteTask(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleToggleReminder = async (id) => {
-    const data = await toggleReminder(id);
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, reminder: data.reminder } : task
-      )
-    );
+    try {
+      await toggleReminder(id);
+      AC.toggleReminder(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toggleAddForm = () => {
-    setShowAddTask((show) => !show);
+    toggleForm();
   };
 
   return (
@@ -64,7 +77,12 @@ const App = () => {
             exact
             element={
               <>
-                {showAddTask && <AddTask onAdd={handleAddTask} />}
+                {showAddTask && (
+                  <Fade in={showAddTask}>
+                    <AddTask onAdd={handleAddTask} />
+                  </Fade>
+                )}
+
                 {tasks.length > 0 ? (
                   <Tasks
                     tasks={tasks}
