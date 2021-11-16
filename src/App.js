@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { fetchTasks, deleteTask, addTask, toggleReminder } from "./utils/api";
 import AddTask from "./components/AddTask";
@@ -8,29 +8,28 @@ import Tasks from "./components/Tasks";
 import About from "./components/About";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators } from "./state/index";
+import { tasksCreators, formCreators } from "./state/index";
 
 const App = () => {
   const tasks = useSelector((state) => state.tasks);
-  const dispatch = useDispatch();
-  const AC = bindActionCreators(actionCreators, dispatch);
+  const showAddTask = useSelector((state) => state.form);
 
-  const [showAddTask, setShowAddTask] = useState(false);
-  const [mounted, setMounted] = useState(false); //c'è sicuramente un modo più elegante
+  const dispatch = useDispatch();
+  const AC = bindActionCreators(tasksCreators, dispatch);
+  const { toggleForm } = bindActionCreators(formCreators, dispatch);
 
   useEffect(() => {
     const getTasks = async () => {
       try {
         const tasks = await fetchTasks();
         AC.setInitTasks(tasks);
-        setMounted(true);
       } catch (error) {
         console.log(error);
       }
     };
 
-    if(!mounted) getTasks();
-  }, [mounted, AC]);
+    getTasks();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAddTask = async (task) => {
     const data = await addTask(task);
@@ -48,7 +47,7 @@ const App = () => {
   };
 
   const toggleAddForm = () => {
-    setShowAddTask((show) => !show);
+    toggleForm();
   };
 
   return (

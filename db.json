@@ -1,21 +1,21 @@
 {
   "tasks": [
     {
-      "text": "nuova task",
-      "day": "Oggi all 3",
+      "text": "Pulire camera",
+      "day": "27 febbraio",
       "reminder": true,
       "id": 1
     },
     {
-      "text": "test",
-      "day": "aopsidfj",
-      "reminder": false,
+      "text": "Rubare bicicletta",
+      "day": "domani a pranzo",
+      "reminder": true,
       "id": 2
     },
     {
-      "text": "heey",
-      "day": "domani",
-      "reminder": true,
+      "text": "Non fare niente",
+      "day": "sempre",
+      "reminder": false,
       "id": 3
     }
   ]
