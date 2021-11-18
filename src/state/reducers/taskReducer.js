@@ -1,11 +1,11 @@
 //function that returns a state
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case "set":
+    case "set_tasks":
         return [...action.payload];
-    case "add":
+    case "add_task":
       return [...state, action.payload];
-    case "delete":
+    case "delete_task":
       return state.filter((task) => task.id !== action.payload);
     case "toggleReminder":
       return state.map((task) =>
