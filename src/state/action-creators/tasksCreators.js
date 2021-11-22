@@ -1,18 +1,18 @@
 export const setInitTasks = (tasks) => {
   return (dispatch) => {
-    dispatch({type: "set", payload: tasks })
+    dispatch({type: "set_tasks", payload: tasks })
   }
 }
 
 export const addTask = (task) => {
   return (dispatch) => {
-    dispatch({ type: "add", payload: task });
+    dispatch({ type: "add_task", payload: task });
   };
 };
 
 export const deleteTask = (taskId) => {
   return (dispatch) => {
-    dispatch({ type: "delete", payload: taskId });
+    dispatch({ type: "delete_task", payload: taskId });
   };
 };
 
