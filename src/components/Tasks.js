@@ -15,9 +15,6 @@ const Tasks = ({ tasks, onDelete, onToggle }) => {
           ))}
         </TransitionGroup>
       </List>
-      <div className="w100 d-flex justify-content-center">
-        <small style={{ fontSize: '12px', fontWeight: '350'}}>doubleclick a task to set reminder</small>
-      </div>
     </>
   );
 };

@@ -4,7 +4,7 @@ import { fetchTasks, deleteTask, addTask, toggleReminder } from "./utils/api";
 import AddTask from "./components/AddTask";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import About from "./components/About";
+import About from "./components/about/About";
 import Collapse from "@mui/material/Collapse";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
