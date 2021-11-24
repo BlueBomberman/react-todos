@@ -8,7 +8,10 @@ const Footer = () => {
     <footer>
       <p>Copyright &copy; 2021</p>
       {location.pathname === "/" ? (
-        <Link to="/about">About</Link>
+        <div className="d-flex justify-content-center">
+          <Link to="/about" className="pr-2">About</Link>
+          <Link to="/form">Form</Link>
+        </div>
       ) : (
         <Link to="/">Home</Link>
       )}

@@ -2,12 +2,12 @@ import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import { useLocation } from "react-router";
 
-const Header = ({ title, onAdd, showAdd }) => {
+const Header = ({ onAdd, showAdd }) => {
   const location = useLocation();
 
   return (
     <header className="header">
-      <h1>{title}</h1>
+      <h1>{location.pathname === "/form" ? "Registration" : "Task tracker"}</h1>
       {location.pathname === "/" && (
         <Button variant="contained" color={showAdd ? "primary" : "secondary"} onClick={onAdd}>
           {showAdd ? "Close" : "Add"}

@@ -8,7 +8,7 @@ const AppContent = ({
   handleDeleteTask,
 }) => {
   return (
-    <article>
+    <article className="w100">
       {loading ? (
         <section className="w100 d-flex align-items-center justify-content-center my-3">
           <CircularProgress />
