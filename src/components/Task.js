@@ -7,7 +7,7 @@ const Task = ({ task, onDelete, onToggle }) => {
   useEffect(() => {
     try {
       const dateDay = new Date(task.day);
-      setDay(dateDay.toLocaleString());
+      setDay(dateDay.toLocaleString().slice(0,-3));
     } catch (error) {
       console.log(error);
     }
