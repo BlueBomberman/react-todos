@@ -1,35 +1,66 @@
-import Tasks from "./Tasks";
-import CircularProgress from "@mui/material/CircularProgress";
+import Header from "./Header";
+import Footer from "./Footer";
+import About from "./about/About";
+import Home from "./home/Home";
+import RegisterForm from "./form/RegisterForm";
+import { Routes, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { tasksCreators, formCreators } from "../state/index";
+import { useEffect, useState } from "react";
+import { fetchTasks } from "../utils/api";
 
-const AppContent = ({
-  loading,
-  tasks,
-  handleToggleReminder,
-  handleDeleteTask,
-}) => {
+const AppContent = () => {
+  const [loading, setLoading] = useState(false);
+
+  const showAddTask = useSelector((state) => state.form);
+  const dispatch = useDispatch();
+  const { setInitTasks } = bindActionCreators(tasksCreators, dispatch);
+  const { toggleForm, setVisibilityForm } = bindActionCreators(
+    formCreators,
+    dispatch
+  );
+
+  useEffect(() => {
+    const getTasks = async () => {
+      try {
+        setLoading(true);
+        const tasks = await fetchTasks();
+        setInitTasks(tasks);
+        document.addEventListener("keydown", handleKeyDown, false);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getTasks();
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown, false);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 27) {
+      setVisibilityForm(false);
+    }
+  };
+
   return (
-    <article className="w100">
-      {loading ? (
-        <section className="w100 d-flex align-items-center justify-content-center my-3">
-          <CircularProgress />
-        </section>
-      ) : tasks.length > 0 ? (
-        <section>
-          <Tasks
-            tasks={tasks}
-            onToggle={handleToggleReminder}
-            onDelete={handleDeleteTask}
-          />
-          <div className="w100 d-flex justify-content-center">
-            <small style={{ fontSize: "12px", fontWeight: "350" }}>
-              doubleclick a task to toggle the reminder
-            </small>
-          </div>
-        </section>
-      ) : (
-        "No tasks to show"
-      )}
-    </article>
+    <div className="container">
+      <Header
+        title="Task Tracker"
+        onAdd={toggleForm}
+        showAdd={showAddTask}
+      />
+      <Routes>
+        <Route path="/" exact element={<Home loading={loading} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/form" element={<RegisterForm />} />
+      </Routes>
+      <Footer />
+    </div>
   );
 };
 
